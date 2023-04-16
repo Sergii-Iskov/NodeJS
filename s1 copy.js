@@ -57,6 +57,17 @@ function Product(
     this.brand = newBrand;
   };
 
+  this.addSize = function (newSize) {
+    this.sizes.push(newSize);
+  };
+
+  this.deleteSize = function (someSize) {
+    let index = this.sizes.indexOf(someSize);
+    if (index >= 0) {
+      this.sizes.splice(index, 1);
+    }
+  };
+
   this.getActiveSize = function () {
     return this.activeSize;
   };
@@ -100,6 +111,7 @@ function Product(
     }
     return `no reviews with ID = ${reviewID}`;
   };
+
   this.deleteReview = function (reviewID) {
     let newRevies = [];
     for (let i = 0; i < this.reviews.length; i++) {
@@ -144,8 +156,14 @@ pen.addReview(3, "Natali", "2023:04:13", "no info", 5);
 pen.addReview(4, "Maxon", "2023:04:14", "gav-gav", 0);
 console.log(pen.reviews);
 pen.deleteReview(3);
+console.log(pen.getReviewByID(5));
 console.log(pen.reviews);
 
-console.log(pen.getReviewByID(5));
 console.log(pen.getImage(2));
 console.log(pen.getImage());
+
+console.log(pen.sizes);
+pen.addSize("XXXXXXL");
+console.log(pen.sizes);
+pen.deleteSize("XL");
+console.log(pen.sizes);
