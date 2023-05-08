@@ -199,15 +199,17 @@ class AbstractProduct {
   }
 
   getOrSet(...property) {
-    let prop = property[0];
-    if (property.length == 1) {
-      return this[prop];
-    } else if (property.length == 2) {
-      this[prop] = property[1];
-      return this[prop];
-    } else {
-      return "you must write only one or two arguments!!!";
-    }
+    let prop = property[0].toLowerCase();
+    if (this.hasOwnProperty(prop)) {
+      if (property.length == 1) {
+        return this[prop];
+      } else if (property.length == 2) {
+        this[prop] = property[1];
+        return this[prop];
+      } else {
+        return "You must write only one or two arguments!!!";
+      }
+    } else return `${this.name} does not have property "${prop}"`;
   }
 }
 
@@ -381,7 +383,8 @@ let phone = new Electronics({
 
 // console.log(phone.getFullInformation());
 // console.log(phone.getOrSet("power"));
-// console.log(phone.getOrSet("power", 500));
+console.log(phone.getOrSet("power", 500));
+console.log(phone.getOrSet("powers"));
 
 let products = [];
 products.push(hat);
