@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+      .blackBox {
+        margin: 20px;
+        height: 100px;
+        width: 100px;
+        background-color: black;
+        color: white;
+        text-align: center;
+        font-size: 30px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn1">Прибрати</button>
+    <button id="btn3">Сховати</button>
+    <input type="text" placeholder="Box number to hide" min="1" max="5" />
+    <div id="div1" class="blackBox hidden">1</div>
+    <div id="div2" class="blackBox hidden">2</div>
+    <div id="div3" class="blackBox hidden">3</div>
+    <div id="div4" class="blackBox hidden">4</div>
+    <div id="div5" class="blackBox hidden">5</div>
+
+    <script>
+      document.querySelector("#btn1").addEventListener("click", function () {
+        if (document.querySelector("input").value) {
+          let blackBox = document.querySelector(
+            `#div${document.querySelector("input").value}`
+          );
+          if (!blackBox.style.display || blackBox.style.display != "none") {
+            blackBox.style.display = "none";
+          } else {
+            blackBox.style.display = "block";
+          }
+        } else alert("You forgot input box number");
+      });
+
+      document.querySelector("#btn3").addEventListener("click", function () {
+        if (document.querySelector("input").value) {
+          let blackBox = document.querySelector(
+            `#div${document.querySelector("input").value}`
+          );
+          if (
+            !blackBox.style.visibility ||
+            blackBox.style.visibility != "hidden"
+          ) {
+            blackBox.style.visibility = "hidden";
+          } else {
+            blackBox.style.visibility = "visible";
+          }
+        } else alert("You forgot input box number");
+      });
+    </script>
+  </body>
+</html>

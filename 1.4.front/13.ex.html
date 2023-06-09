@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      textarea {
+        height: 200px;
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <span>Exercise 13</span>
+    <div class="ex">
+      <textarea id="text1" class="input"></textarea>
+    </div>
+    <div class="ex">
+      <textarea id="text2" class="input"></textarea>
+    </div>
+    <div class="ex">
+      <textarea id="text3" class="input"></textarea>
+    </div>
+
+    <script>
+      let text1 = document.querySelector("#text1");
+      let text2 = document.querySelector("#text2");
+      let text3 = document.querySelector("#text3");
+
+      text1.addEventListener("change", function () {
+        localStorage.setItem("text1", text1.value);
+      });
+
+      text2.addEventListener("change", function () {
+        document.cookie = encodeURIComponent(text1.value);
+      });
+
+      text3.addEventListener("change", function () {
+        sessionStorage.setItem("text3", text3.value);
+      });
+
+      globalThis.addEventListener("load", function () {
+        if (document.cookie) {
+          text1.value = localStorage.getItem("text1");
+          text2.value = decodeURIComponent(document.cookie);
+          text3.value = sessionStorage.getItem("text3");
+        }
+      });
+    </script>
+  </body>
+</html>

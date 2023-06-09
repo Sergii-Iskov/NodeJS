@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      .box {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: grey;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn1">Press me</button>
+
+    <script>
+      document.querySelector("#btn1").addEventListener("click", function () {
+        let box = document.createElement("div");
+        box.classList.add("box");
+        document.body.append(box);
+        document.body.style.overflow = "hidden";
+        box.onclick = function () {
+          box.style.visibility = "hidden";
+          document.body.style.overflow = "auto";
+        };
+      });
+    </script>
+  </body>
+</html>

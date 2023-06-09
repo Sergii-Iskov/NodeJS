@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .blackBox {
+        margin: 20px;
+        height: 100px;
+        width: 100px;
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn1">Прибрати</button>
+    <button id="btn3">Сховати</button>
+    <div class="blackBox hidden"></div>
+    <div class="blackBox hidden"></div>
+    <div class="blackBox hidden"></div>
+    <div class="blackBox hidden"></div>
+    <div class="blackBox hidden"></div>
+
+    <script>
+      let blackBoxes = document.querySelectorAll(".blackBox");
+      //   let copyBlackBoxes;
+
+      document.querySelector("#btn1").addEventListener("click", function () {
+        blackBoxes.forEach((elem) => {
+          if (!elem.style.display || elem.style.display != "none") {
+            elem.style.display = "none";
+          } else {
+            elem.style.display = "block";
+          }
+        });
+      });
+
+      //   document.querySelector("#btn2").addEventListener("click", function () {
+      //     if (document.querySelectorAll(".blackBox")) {
+      //       copyBlackBoxes = JSON.stringify(blackBoxes);
+      //       for (let i = 0; i < blackBoxes.length; i++) {
+      //         blackBoxes[i].remove();
+      //       }
+      //     } else {
+      //       document.body.innerHTML += JSON.parse(copyBlackBoxes);
+      //     }
+      //   });
+
+      document.querySelector("#btn3").addEventListener("click", function () {
+        document.querySelectorAll(".hidden").forEach((elem) => {
+          if (!elem.style.visibility || elem.style.visibility != "hidden") {
+            elem.style.visibility = "hidden";
+          } else {
+            elem.style.visibility = "visible";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

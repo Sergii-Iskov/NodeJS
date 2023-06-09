@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+      .ex {
+        display: flex;
+      }
+      .box {
+        margin: 20px;
+        height: 100px;
+        width: 100px;
+      }
+      .blackBox {
+        box-sizing: border-box;
+        margin: 20px;
+        height: 100px;
+        width: 100px;
+        background-color: black;
+        color: white;
+        text-align: center;
+        font-size: 30px;
+        padding: 10px;
+      }
+      span {
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px;
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn1">Прибрати</button>
+    <button id="btn2">Сховати</button>
+    <input
+      id="numberBox"
+      type="text"
+      placeholder="Box number to hide"
+      min="1"
+      max="5"
+    />
+    <span>Exercise 4</span>
+    <div class="ex">
+      <div id="div1" class="blackBox hidden">1</div>
+      <div id="div2" class="blackBox hidden">2</div>
+      <div id="div3" class="blackBox hidden">3</div>
+      <div id="div4" class="blackBox hidden">4</div>
+      <div id="div5" class="blackBox hidden">5</div>
+    </div>
+
+    <div class="ex">
+      <span>Exercise 5</span>
+      <div
+        id="yellowBox"
+        class="box"
+        style="background-color: yellow"
+        onclick="alertMessage()"
+      ></div>
+      <span>Exercise 6</span>
+      <div id="redBox" class="box" style="background-color: red"></div>
+      <span>Exercise 7</span>
+      <div
+        id="greenBox"
+        class="box"
+        style="
+          background-color: green;
+          width: 50px;
+          height: 20px;
+          visibility: hidden;
+        "
+      ></div>
+    </div>
+
+    <div class="ex">
+      <span>Exercise 8</span>
+      <input id="getImg" type="text" />
+      <button id="btn3">Get image</button>
+    </div>
+
+    <script>
+      let input = document.querySelector("#numberBox");
+
+      // Exercise 4
+      document.querySelector("#btn1").addEventListener("click", function () {
+        if (input.value) {
+          let blackBox = document.querySelector(
+            `#div${document.querySelector("input").value}`
+          );
+          if (!blackBox.style.display || blackBox.style.display != "none") {
+            blackBox.style.display = "none";
+          } else {
+            blackBox.style.display = "block";
+          }
+        } else alert("You forgot input box number");
+      });
+
+      document.querySelector("#btn2").addEventListener("click", function () {
+        if (input.value) {
+          let blackBox = document.querySelector(
+            `#div${document.querySelector("input").value}`
+          );
+          if (
+            !blackBox.style.visibility ||
+            blackBox.style.visibility != "hidden"
+          ) {
+            blackBox.style.visibility = "hidden";
+          } else {
+            blackBox.style.visibility = "visible";
+          }
+        } else alert("You forgot input box number");
+      });
+
+      // Exercise 5
+      function alertMessage() {
+        alert("Hello");
+        document.querySelector("#yellowBox").onclick = yellowHide;
+      }
+
+      function yellowHide() {
+        document.querySelector("#yellowBox").style.visibility = "hidden";
+      }
+
+      // Exercise 6
+      let redBox = document.querySelector("#redBox");
+      redBox.addEventListener("mouseover", function () {
+        redBox.style.visibility = "hidden";
+      });
+
+      redBox.addEventListener("mouseout", function () {
+        redBox.style.visibility = "visible";
+      });
+
+      // Exercise 7
+      let greenBox = document.querySelector("#greenBox");
+      input.addEventListener("focus", function () {
+        greenBox.style.visibility = "visible";
+      });
+
+      input.addEventListener("input", function () {
+        greenBox.style.visibility = "hidden";
+      });
+
+      // Exercise 8
+      document.querySelector("#btn3").addEventListener("click", function () {
+        let srces = document.querySelector("#getImg").value;
+        if (srces) {
+          let newImg = document.createElement("img");
+          newImg.src = srces;
+          return document.body.append(newImg);
+        }
+      });
+    </script>
+  </body>
+</html>

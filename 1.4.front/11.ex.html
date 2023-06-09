@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        box-sizing: border-box;
+        width: 100px;
+        border: 2px solid green;
+        position: absolute;
+        right: 0;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      X: <span id="X"></span><br />Y: <span id="Y"></span><br />Lang:
+      <span id="lang"></span>
+    </div>
+
+    <script>
+      let X = document.querySelector("#X");
+      let Y = document.querySelector("#Y");
+
+      globalThis.addEventListener("mousemove", function (e) {
+        X.textContent = e.pageX;
+        Y.textContent = e.pageY;
+        document.querySelector("#lang").textContent = navigator.language;
+      });
+    </script>
+  </body>
+</html>
