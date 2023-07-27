@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .row1 {
+        border: 2px solid blue;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: aquamarine;
+      }
+      .row2 {
+        text-align: center;
+      }
+      table {
+        width: 80%;
+        /* border-collapse: collapse; */
+      }
+    </style>
+    <title>HTTP Client</title>
+  </head>
+  <body>
+    <h1>HTTP Client</h1>
+    <textarea
+      id="textArea"
+      rows="4"
+      cols="50"
+      placeholder="Введіть текст"
+    ></textarea>
+    <button id="sendButton">Надіслати</button>
+    <div id="responseContainer"></div>
+
+    <script>
+      const sendButton = document.getElementById("sendButton");
+      const textArea = document.getElementById("textArea");
+      const responseContainer = document.getElementById("responseContainer");
+
+      sendButton.addEventListener("click", async () => {
+        if (textArea.value) {
+          const textToSend = textArea.value;
+
+          const requestOptions = {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain",
+              //   "Access-Control-Allow-Origin": "http://127.0.0.1:5500/",
+              credentials: "include",
+            },
+
+            body: textToSend,
+          };
+
+          // const startTime = Date.now();
+          try {
+            const response = await fetch(
+              "http://localhost:3000/echo",
+              requestOptions
+            );
+
+            // Слухаємо подію "data" та зчитуємо отримані дані
+            const responseData = await response.text();
+
+            // const endTime = Date.now();
+            // const totalTime = endTime - startTime;
+
+            responseContainer.innerHTML = `${responseData}`;
+          } catch (error) {
+            responseContainer.innerHTML = `Помилка: ${error.message}`;
+            // responseTime.textContent = "";
+          }
+          textArea.value = "";
+        }
+      });
+    </script>
+  </body>
+</html>

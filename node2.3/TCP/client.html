@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TCP Client</title>
+  </head>
+  <body>
+    <h1>TCP Client</h1>
+    <input type="text" id="inputText" placeholder="Enter text" />
+    <button onclick="sendData()">Send</button>
+    <p id="response"></p>
+
+    <script>
+      function sendData() {
+        const inputText = document.getElementById("inputText").value;
+        const url = "http://localhost:3000";
+
+        fetch(url, {
+          method: "POST",
+          body: inputText,
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("response").innerText = data;
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>
