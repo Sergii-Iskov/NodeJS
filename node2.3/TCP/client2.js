@@ -11,7 +11,6 @@ client.connect(port, host, () => {
   client.on("data", (data) => {
     const totalTime = Date.now() - startTime;
     console.log(`Server Says : ${data}. Total time taken: ${totalTime}ms`);
-    // client.end();
   });
 
   client.on("close", () => {

@@ -9,20 +9,17 @@ server.listen(port, host, () => {
 
 let clients = [];
 server.on("connection", (sock) => {
-  sock.setKeepAlive(false);
   console.log(`CONNECTED: ${sock.remoteAddress}:${sock.remotePort}`);
 
-  let startTime = null;
   clients.push(sock);
 
   sock.on("data", (data) => {
-    if (!startTime) {
-      startTime = Date.now();
-    }
-
-    console.log("DATA " + sock.remoteAddress + ": " + data);
+    console.log(
+      `DATA ${sock.remoteAddress}:${data}, ${new Date()}. Received ${
+        sock.bytesRead
+      } bytes`
+    );
     // Calculate and send the time taken
-    const totalTime = Date.now() - startTime;
     // Write the data back to all the connected, the client will receive it as data from the server
     clients.forEach((elem, index, array) =>
       elem.write(`${sock.remoteAddress}:${sock.remotePort} said ${data}`)
@@ -48,6 +45,12 @@ server.on("connection", (sock) => {
   });
 
   sock.on("error", (err) => console.error("An error occurred: ", err.message));
+});
+
+// emits when any error occurs
+server.on("error", (error) => {
+  log("tcp_server", "error", error);
+  server.close();
 });
 
 server.on("close", () => {
