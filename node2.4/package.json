@@ -1,10 +1,10 @@
 {
   "description": "",
   "type": "module",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app",
-    "server": "nodemon app"
+    "start": "node index",
+    "server": "nodemon index"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
