@@ -34,23 +34,23 @@ routes.get("/items", (req, res) => {
     };
     userTASKS.items = TASKS.items.filter((task) => task.login === user);
 
-    res.json(userTASKS);
+    return res.json(userTASKS);
   } else {
-    res.status(403).json({ error: "forbidden" });
+    return res.status(403).json({ error: "forbidden" });
   }
 });
 
 routes.post("/items", (req, res) => {
   if (!req.body) return res.sendStatus(500);
 
-  const user = req.session.login;
+  const userName = req.session.login;
   const idMess = Date.now();
   const newText = req.body.text;
 
-  let newItem = { id: idMess, login: user, text: newText, checked: false };
+  let newItem = { id: idMess, login: userName, text: newText, checked: false };
   TASKS.items.push(newItem);
 
-  res.status(201).json({ id: idMess });
+  return res.status(201).json({ id: idMess });
 });
 
 routes.put("/items", (req, res) => {
@@ -62,9 +62,9 @@ routes.put("/items", (req, res) => {
   if (changeItem) {
     changeItem.text = req.body.text;
     changeItem.checked = req.body.checked;
-    res.status(204).json({ ok: true });
+    return res.status(204).json({ ok: true });
   } else {
-    res.status(404).json({ ok: false });
+    return res.status(404).json({ ok: false });
   }
 });
 
@@ -72,9 +72,9 @@ routes.delete("/items", (req, res) => {
   try {
     const idMess = req.body.id;
     TASKS.items = TASKS.items.filter((item) => item.id !== idMess);
-    res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true });
   } catch (error) {
-    res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false });
   }
 });
 
@@ -88,9 +88,9 @@ routes.post("/login", (req, res) => {
 
   if (user) {
     req.session.login = user.login;
-    res.status(201).json({ ok: true });
+    return res.status(201).json({ ok: true });
   } else {
-    res.status(403).json({ ok: false, error: "not found" });
+    return res.status(403).json({ ok: false, error: "not found" });
   }
 });
 
@@ -101,7 +101,7 @@ routes.post("/logout", (req, res) => {
       return res.status(403).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
-      res.status(201).json({ ok: true });
+      return res.status(201).json({ ok: true });
     }
   });
 });
@@ -109,12 +109,15 @@ routes.post("/logout", (req, res) => {
 routes.post("/register", (req, res) => {
   if (!req.body) return res.sendStatus(500);
   const { login, pass } = req.body;
-  const isExist = Users.find((user) => user.login === login) ? true : false;
+  const isExist =
+    // !Users.items
+    // ? false :
+    Users.users.find((user) => user.login === login) ? true : false;
 
   if (isExist) {
     return res.status(403).json({ ok: false, error: "isExist" });
   } else {
-    Users.push({ login, pass });
+    Users.users.push({ login, pass });
     return res.status(201).json({ ok: true });
   }
 });
