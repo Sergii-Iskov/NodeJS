@@ -2,28 +2,10 @@ import express, { Router, Request, Response } from "express";
 import session from "express-session";
 import sessionFileStore from "session-file-store";
 import { SESSION_PASSWORD } from "../config/secret.js";
+import { TaskList, Task, UserList, User } from "../models/fileAndMemory.js";
 
 const FileStore = sessionFileStore(session);
 const routes: Router = express.Router();
-
-interface Task {
-  id: number;
-  name: string;
-  text: string;
-  checked: boolean;
-}
-
-interface TaskList {
-  items: Task[];
-}
-
-interface User {
-  name: string;
-  pass: string;
-}
-interface UserList {
-  users: User[];
-}
 
 const TASKS: TaskList = {
   items: [],

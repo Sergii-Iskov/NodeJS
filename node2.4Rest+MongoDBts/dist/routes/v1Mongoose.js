@@ -11,6 +11,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { DB_PASSWORD, SESSION_PASSWORD } from "../config/secret.js";
+import { taskSchema, userSchema, } from "../models/mongooze.js";
 import session from "express-session";
 import sessionFileStore from "session-file-store";
 const FileStore = sessionFileStore(session);
@@ -22,34 +23,6 @@ routes.use(session({
     store: new FileStore(),
     cookie: { maxAge: 3600000, secure: false, httpOnly: true },
 }));
-const taskSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        require: [true, "Task description is required"],
-    },
-    name: {
-        type: String,
-        require: [true, "Task description is required"],
-    },
-    text: {
-        type: String,
-        require: [true, "Task description is required"],
-    },
-    checked: {
-        type: Boolean,
-        default: false,
-    },
-});
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: [true, "Task description is required"],
-    },
-    password: {
-        type: String,
-        require: [true, "Task description is required"],
-    },
-});
 const Task = mongoose.model("Task", taskSchema);
 const User = mongoose.model("User", userSchema);
 const URI = `mongodb+srv://sergaiskov:${DB_PASSWORD}@cluster0.yssjlla.mongodb.net/?retryWrites=true&w=majority`;

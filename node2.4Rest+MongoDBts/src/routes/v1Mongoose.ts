@@ -2,6 +2,13 @@ import express, { Router, Request, Response } from "express";
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
 import { DB_PASSWORD, SESSION_PASSWORD } from "../config/secret.js";
+import {
+  TaskList,
+  Task,
+  taskSchema,
+  User,
+  userSchema,
+} from "../models/mongooze.js";
 
 import session, { SessionOptions } from "express-session";
 import sessionFileStore from "session-file-store";
@@ -17,54 +24,6 @@ routes.use(
     cookie: { maxAge: 3600000, secure: false, httpOnly: true },
   })
 );
-
-interface Task extends Document {
-  id: number;
-  name: string;
-  text: string;
-  checked: boolean;
-  //   [key: string]: any;
-}
-
-interface TaskList {
-  items: Task[];
-}
-
-const taskSchema: Schema = new mongoose.Schema({
-  id: {
-    type: Number,
-    require: [true, "Task description is required"],
-  },
-  name: {
-    type: String,
-    require: [true, "Task description is required"],
-  },
-  text: {
-    type: String,
-    require: [true, "Task description is required"],
-  },
-  checked: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-interface User extends Document {
-  name: string;
-  password: string;
-  [key: string]: any;
-}
-
-const userSchema: Schema = new mongoose.Schema({
-  name: {
-    type: String,
-    require: [true, "Task description is required"],
-  },
-  password: {
-    type: String,
-    require: [true, "Task description is required"],
-  },
-});
 
 const Task = mongoose.model("Task", taskSchema);
 const User = mongoose.model("User", userSchema);

@@ -416,7 +416,9 @@ README:
         methods: {
           getTasks: function () {
             const place =
-              this.placeHold === "memory"
+              this.apiVersion === "v2"
+                ? ""
+                : this.placeHold === "memory"
                 ? "/memory"
                 : this.placeHold === "file"
                 ? "/file"
@@ -457,7 +459,9 @@ README:
           deleteTask: function (index) {
             let request = JSON.stringify({ id: index });
             const place =
-              this.placeHold === "memory"
+              this.apiVersion === "v2"
+                ? ""
+                : this.placeHold === "memory"
                 ? "/memory"
                 : this.placeHold === "file"
                 ? "/file"
@@ -498,7 +502,9 @@ README:
             if (this.new_task.text.trim() !== "") {
               let request = JSON.stringify({ text: this.new_task.text });
               const place =
-                this.placeHold === "memory"
+                this.apiVersion === "v2"
+                  ? ""
+                  : this.placeHold === "memory"
                   ? "/memory"
                   : this.placeHold === "file"
                   ? "/file"
@@ -507,7 +513,7 @@ README:
                   : "/mongoose";
               const route = this.apiVersion === "v1" ? "/items" : "/router";
               const qs = {
-                action: this.apiVersion === "v1" ? "" : "createItem",
+                action: this.apiVersion === "v1" ? "" : "addItem",
               };
               fetch(
                 this.apiURL +
@@ -546,7 +552,9 @@ README:
               checked: this.tasks[index].checked,
             });
             const place =
-              this.placeHold === "memory"
+              this.apiVersion === "v2"
+                ? ""
+                : this.placeHold === "memory"
                 ? "/memory"
                 : this.placeHold === "file"
                 ? "/file"
@@ -603,7 +611,9 @@ README:
           },
           logout() {
             const place =
-              this.placeHold === "memory"
+              this.apiVersion === "v2"
+                ? ""
+                : this.placeHold === "memory"
                 ? "/memory"
                 : this.placeHold === "file"
                 ? "/file"
@@ -612,10 +622,19 @@ README:
                 : "/mongoose";
             const route = this.apiVersion === "v1" ? "/logout" : "/router";
             const qs = { action: this.apiVersion === "v1" ? "" : "logout" };
-            fetch(this.apiURL + this.apiVersion + place + route, {
-              method: this.apiVersion === "v1" ? "POST" : "POST",
-              credentials: "include",
-            })
+            fetch(
+              this.apiURL +
+                this.apiVersion +
+                place +
+                route +
+                this.backendSuffix +
+                "?" +
+                new URLSearchParams(qs),
+              {
+                method: this.apiVersion === "v1" ? "POST" : "POST",
+                credentials: "include",
+              }
+            )
               .then((res) => res.json())
               .then((response) => {
                 if (response.ok) {
@@ -633,7 +652,9 @@ README:
                 pass: this.pass,
               });
               const place =
-                this.placeHold === "memory"
+                this.apiVersion === "v2"
+                  ? ""
+                  : this.placeHold === "memory"
                   ? "/memory"
                   : this.placeHold === "file"
                   ? "/file"
@@ -682,7 +703,9 @@ README:
                 pass: this.pass,
               });
               const place =
-                this.placeHold === "memory"
+                this.apiVersion === "v2"
+                  ? ""
+                  : this.placeHold === "memory"
                   ? "/memory"
                   : this.placeHold === "file"
                   ? "/file"

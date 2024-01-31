@@ -15,6 +15,20 @@ import session from "express-session";
 import sessionFileStore from "session-file-store";
 const FileStore = sessionFileStore(session);
 const routes = express.Router();
+// declare type Task = mongodb.OptionalId<mongodb.Document> & {
+//   // _id?: mongodb.BSON.ObjectId | undefined;
+//   id: number;
+//   name: string;
+//   text: string;
+//   checked: boolean;
+// }; // https://jira.mongodb.org/browse/NODE-4470
+// interface TaskList {
+//   items: Task[];
+// }
+// declare type User = mongodb.OptionalId<mongodb.Document> & {
+//   name: string;
+//   pass: string;
+// };
 routes.use(session({
     secret: SESSION_PASSWORD,
     resave: true,

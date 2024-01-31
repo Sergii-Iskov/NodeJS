@@ -2,46 +2,29 @@ import express, { Router, Request, Response } from "express";
 import mongodb, { OptionalId } from "mongodb";
 import bcrypt from "bcrypt";
 import { DB_PASSWORD, SESSION_PASSWORD } from "../config/secret.js";
+import { TaskList, Task, User } from "../models/mongo.js";
 
 import session from "express-session";
 import sessionFileStore from "session-file-store";
 const FileStore = sessionFileStore(session);
 const routes: Router = express.Router();
 
-// declare type Task<TSchema> = TSchema extends {
-//   _id?: mongodb.BSON.ObjectId | undefined;
+// declare type Task = mongodb.OptionalId<mongodb.Document> & {
+//   // _id?: mongodb.BSON.ObjectId | undefined;
 //   id: number;
 //   name: string;
 //   text: string;
 //   checked: boolean;
+// }; // https://jira.mongodb.org/browse/NODE-4470
+
+// interface TaskList {
+//   items: Task[];
 // }
-//   ? TSchema
-//   : mongodb.OptionalId<TSchema>;
 
-declare type Task = mongodb.OptionalId<mongodb.Document> & {
-  // _id?: mongodb.BSON.ObjectId | undefined;
-  id: number;
-  name: string;
-  text: string;
-  checked: boolean;
-};
-
-interface TaskList {
-  items: Task[];
-}
-
-// declare type User<TSchema> = TSchema extends {
-//   _id?: mongodb.BSON.ObjectId | undefined;
+// declare type User = mongodb.OptionalId<mongodb.Document> & {
 //   name: string;
 //   pass: string;
-// }
-//   ? TSchema
-//   : mongodb.OptionalId<TSchema>;
-
-declare type User = mongodb.OptionalId<mongodb.Document> & {
-  name: string;
-  pass: string;
-};
+// };
 
 routes.use(
   session({
