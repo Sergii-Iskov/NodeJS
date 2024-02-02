@@ -128,7 +128,7 @@ function getItems(req: Request, res: Response) {
       return res.json({ items: results });
     });
   } else {
-    return res.status(403).json({ error: "forbidden" });
+    return res.status(400).json({ error: "forbidden" });
   }
 }
 
@@ -138,7 +138,8 @@ function addItem(req: Request, res: Response) {
   const filter = [req.session.login, req.body.text, false];
 
   pool.query<ResultSetHeader>(sql, filter, (error, results) => {
-    if (error) return res.status(500).json({ ok: false });
+    if (error)
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     console.log(results);
     return res.status(201).json({ id: results.insertId });
   });
@@ -151,7 +152,8 @@ function editItem(req: Request, res: Response) {
   const filter = [req.body.text, req.body.checked, req.body.id];
 
   pool.query(sql, filter, (error, results) => {
-    if (error) return console.log(error);
+    if (error)
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     return res.json({ ok: true });
   });
 }
@@ -161,7 +163,8 @@ function deleteItem(req: Request, res: Response) {
   const filter = [req.body.id];
 
   pool.query(sql, filter, (error, results) => {
-    if (error) return res.status(500).json({ ok: false });
+    if (error)
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     return res.json({ ok: true });
   });
 }
@@ -171,23 +174,25 @@ function login(req: Request, res: Response) {
   const filter = [req.body.login];
 
   pool.query<User[]>(sql, filter, (error, results) => {
-    if (error) return res.status(500).json({ ok: false });
+    if (error)
+      return res.status(500).json({ ok: false, error: "Something wrong" });
 
     if (results[0] && bcrypt.compareSync(req.body.pass, results[0].pass)) {
       req.session.login = results[0].name;
       return res.status(201).json({ ok: true });
     } else {
-      return res.status(403).json({ ok: false, error: "not found" });
+      return res.status(400).json({ ok: false, error: "not found" });
     }
   });
 }
 
 function logout(req: Request, res: Response) {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
 
   req.session.destroy((err) => {
     if (err) {
-      return res.status(403).json({ error: `${err.message}` });
+      return res.status(400).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
       return res.status(201).json({ ok: true });
@@ -204,7 +209,7 @@ function register(req: Request, res: Response) {
     if (error) return res.status(500).json({ ok: false });
 
     if (results[0]) {
-      return res.status(403).json({ ok: false, error: "isExist" });
+      return res.status(400).json({ ok: false, error: "isExist" });
     }
 
     const hashPass: string = bcrypt.hashSync(pass, 7);
@@ -213,7 +218,8 @@ function register(req: Request, res: Response) {
     const filter2 = [login, hashPass];
 
     pool.query<ResultSetHeader>(sql2, filter2, (error, results2) => {
-      if (error) return res.status(500).json({ ok: false });
+      if (error)
+        return res.status(500).json({ ok: false, error: "Something wrong" });
       return res.status(201).json({ ok: true });
     });
   });

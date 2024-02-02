@@ -34,7 +34,7 @@ routes.get("/items", (req: Request, res: Response) => {
     userTASKS.items = TASKS.items.filter((task) => task.name === user);
     return res.json(userTASKS);
   } else {
-    return res.status(403).json({ error: "forbidden" });
+    return res.status(400).json({ error: "forbidden" });
   }
 });
 
@@ -53,7 +53,7 @@ routes.post("/items", (req: Request, res: Response) => {
     TASKS.items.push(newItem);
     return res.status(201).json({ id: idMess });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -69,10 +69,10 @@ routes.put("/items", (req: Request, res: Response) => {
       changeItem.checked = req.body.checked;
       return res.status(204).json({ ok: true });
     } else {
-      return res.status(404).json({ ok: false });
+      return res.status(400).json({ ok: false, error: "Bad data" });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -82,7 +82,7 @@ routes.delete("/items", (req: Request, res: Response) => {
     TASKS.items = TASKS.items.filter((item) => item.id !== idMess);
     return res.status(200).json({ ok: true });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -97,18 +97,19 @@ routes.post("/login", (req: Request, res: Response) => {
       req.session.login = curUser.name;
       return res.status(201).json({ ok: true });
     } else {
-      return res.status(403).json({ ok: false, error: "not found" });
+      return res.status(400).json({ ok: false, error: "not found" });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
 routes.post("/logout", (req: Request, res: Response) => {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
   req.session.destroy((err) => {
     if (err) {
-      return res.status(403).json({ error: `${err.message}` });
+      return res.status(400).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
       return res.status(201).json({ ok: true });
@@ -117,14 +118,15 @@ routes.post("/logout", (req: Request, res: Response) => {
 });
 
 routes.post("/register", (req: Request, res: Response) => {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
   const { login, pass }: { login: string; pass: string } = req.body;
   const isExist: boolean = Users.users.find((user) => user.name === login)
     ? true
     : false;
 
   if (isExist) {
-    return res.status(403).json({ ok: false, error: "isExist" });
+    return res.status(400).json({ ok: false, error: "isExist" });
   } else {
     Users.users.push({ name: login, pass });
     return res.status(201).json({ ok: true });

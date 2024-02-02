@@ -21,13 +21,22 @@ const app = express();
 const __dirname = path.resolve();
 
 app.use(morgan("dev"));
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// serve it as static file from your web app
 app.get("/", (req: express.Request, res: express.Response) => {
   res.sendFile(path.resolve(__dirname, "static", "index.html"));
 });
+
+// serve it as separate purely static site
+// app.use(
+//   cors({
+//     origin: "http://localhost:8080",
+//     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//     credentials: true,
+//   })
+// );
 
 app.use("/api/v1/memory", v1Memory);
 app.use("/api/v1/file", v1File);

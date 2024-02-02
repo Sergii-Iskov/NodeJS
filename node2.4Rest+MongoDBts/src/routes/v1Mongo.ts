@@ -50,7 +50,7 @@ routes.get("/items", async (req: Request, res: Response): Promise<Response> => {
       return res.status(500).json({ ok: false });
     }
   } else {
-    return res.status(403).json({ error: "forbidden" });
+    return res.status(400).json({ error: "forbidden" });
   }
 });
 
@@ -72,7 +72,7 @@ routes.post(
       });
       return res.json({ id: idMess });
     } catch (error) {
-      return res.status(500).json({ ok: false });
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     }
   }
 );
@@ -90,7 +90,7 @@ routes.put("/items", async (req: Request, res: Response): Promise<Response> => {
     );
     return res.json({ ok: true });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -105,7 +105,7 @@ routes.delete(
       await collection.findOneAndDelete({ id: idMess });
       return res.json({ ok: true });
     } catch (error) {
-      return res.status(500).json({ ok: false });
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     }
   }
 );
@@ -127,19 +127,20 @@ routes.post(
         req.session.login = user.name;
         return res.status(201).json({ ok: true });
       } else {
-        return res.status(403).json({ ok: false, error: "not found" });
+        return res.status(400).json({ ok: false, error: "not found" });
       }
     } catch (error) {
-      return res.status(500).json({ ok: false });
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     }
   }
 );
 
 routes.post("/logout", (req: Request, res: Response) => {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
   req.session.destroy((err) => {
     if (err) {
-      return res.status(403).json({ error: `${err.message}` });
+      return res.status(400).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
       return res.status(201).json({ ok: true });
@@ -158,7 +159,7 @@ routes.post(
       const candidate: any = await collection.findOne({ name: login });
 
       if (candidate) {
-        return res.status(403).json({ ok: false, error: "isExist" });
+        return res.status(400).json({ ok: false, error: "isExist" });
       }
 
       const hashPass: string = bcrypt.hashSync(password, 7);
@@ -167,7 +168,7 @@ routes.post(
 
       return res.status(201).json({ ok: true });
     } catch (error) {
-      return res.status(500).json({ ok: false });
+      return res.status(500).json({ ok: false, error: "Something wrong" });
     }
   }
 );

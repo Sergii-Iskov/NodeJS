@@ -31,7 +31,7 @@ routes.get("/items", (req: Request, res: Response) => {
     console.log(TASKS);
     res.json(userTASKS);
   } else {
-    res.status(403).json({ error: "forbidden" });
+    res.status(400).json({ error: "forbidden" });
   }
 });
 
@@ -62,7 +62,7 @@ routes.post("/items", (req: Request, res: Response) => {
 
     res.status(201).json({ id: idMess });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -84,10 +84,10 @@ routes.put("/items", (req: Request, res: Response) => {
       fs.writeFileSync("items.json", data);
       res.status(204).json({ ok: true });
     } else {
-      res.status(404).json({ ok: false });
+      return res.status(400).json({ ok: false, error: "Bad data" });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -103,7 +103,7 @@ routes.delete("/items", (req: Request, res: Response) => {
 
     res.json({ ok: true });
   } catch (error) {
-    res.status(500).json({ ok: false });
+    res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
@@ -121,18 +121,19 @@ routes.post("/login", (req: Request, res: Response) => {
       req.session.login = curUser.name;
       res.status(201).json({ ok: true });
     } else {
-      res.status(403).json({ ok: false, error: "not found" });
+      res.status(400).json({ ok: false, error: "not found" });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 
 routes.post("/logout", (req: Request, res: Response) => {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
   req.session.destroy((err) => {
     if (err) {
-      return res.status(403).json({ error: `${err.message}` });
+      return res.status(400).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
       res.status(201).json({ ok: true });
@@ -156,7 +157,7 @@ routes.post("/register", (req: Request, res: Response) => {
       ? true
       : false;
     if (isExist) {
-      return res.status(403).json({ ok: false, error: "isExist" });
+      return res.status(400).json({ ok: false, error: "isExist" });
     } else {
       allUsers.users.push({ name: login, pass });
       let data: string = JSON.stringify(allUsers);
@@ -164,7 +165,7 @@ routes.post("/register", (req: Request, res: Response) => {
       return res.status(201).json({ ok: true });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 });
 

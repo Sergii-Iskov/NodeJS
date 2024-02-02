@@ -294,7 +294,6 @@ README:
             </button>
           </div>
           <div>
-            <!-- <button @click="getTasks()" class="primary">Поїхали</button> -->
             <button @click="getTasks" class="primary">Поїхали</button>
           </div>
         </div>
@@ -353,7 +352,7 @@ README:
           ></task>
 
           <hr />
-          <button @click="logout" class="logout">Выйти &#128682;</button>
+          <button @click="logout" class="logout">Вийти &#128682;</button>
         </div>
         <div class="wrapper" v-else-if="step === 'error'">
           Виникла помилка. Відкрийте консоль розробника щоб побачити подробиці.
@@ -436,7 +435,7 @@ README:
                 "?" +
                 new URLSearchParams(qs),
               {
-                credentials: "include", //++++++++++++++++++++++++++++++++++++++++
+                credentials: "include",
                 method: this.apiVersion === "v1" ? "GET" : "POST",
               }
             )
@@ -738,7 +737,7 @@ README:
                     alert("Такий користувач вже існує. спробуйте ще раз");
                   } else {
                     alert(
-                      "Виникла помилка2. Відкрийте консоль розробника щоб побачити подробиці.."
+                      "Виникла помилка. Відкрийте консоль розробника щоб побачити подробиці.."
                     );
                   }
                 });

@@ -85,7 +85,7 @@ async function getItems(req: Request, res: Response): Promise<Response> {
       return res.status(500).json({ ok: false });
     }
   } else {
-    return res.status(403).json({ error: "forbidden" });
+    return res.status(400).json({ error: "forbidden" });
   }
 }
 
@@ -101,7 +101,7 @@ async function addItem(req: Request, res: Response): Promise<Response> {
     });
     return res.status(201).json({ id: idMess });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 }
 
@@ -116,7 +116,7 @@ async function editItem(req: Request, res: Response): Promise<Response> {
     );
     return res.json({ ok: true });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 }
 
@@ -126,7 +126,7 @@ async function deleteItem(req: Request, res: Response): Promise<Response> {
     await Task.deleteOne({ id: idMess });
     return res.json({ ok: true });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 }
 
@@ -138,18 +138,19 @@ async function login(req: Request, res: Response): Promise<Response> {
       req.session.login = user.name;
       return res.status(201).json({ ok: true });
     } else {
-      return res.status(403).json({ ok: false, error: "not found" });
+      return res.status(400).json({ ok: false, error: "not found" });
     }
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 }
 
 function logout(req: Request, res: Response) {
-  if (!req.body) return res.sendStatus(500);
+  if (!req.body)
+    return res.sendStatus(500).json({ ok: false, error: "Something wrong" });
   req.session.destroy((err) => {
     if (err) {
-      return res.status(403).json({ error: `${err.message}` });
+      return res.status(400).json({ error: `${err.message}` });
     } else {
       res.clearCookie("connect.sid");
       return res.status(201).json({ ok: true });
@@ -163,14 +164,14 @@ async function register(req: Request, res: Response): Promise<Response> {
     const candidate = await User.findOne({ name: login });
 
     if (candidate) {
-      return res.status(403).json({ ok: false, error: "isExist" });
+      return res.status(400).json({ ok: false, error: "isExist" });
     }
     const hashPass: string = bcrypt.hashSync(pass, 7);
     await User.create({ name: login, password: hashPass });
 
     return res.status(201).json({ ok: true });
   } catch (error) {
-    return res.status(500).json({ ok: false });
+    return res.status(500).json({ ok: false, error: "Something wrong" });
   }
 }
 
