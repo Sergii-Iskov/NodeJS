@@ -1,6 +1,8 @@
 import express, { Router, Request, Response } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import session, { SessionOptions } from "express-session";
+import sessionFileStore from "session-file-store";
 import { DB_PASSWORD, SESSION_PASSWORD } from "../config/secret.js";
 import {
   TaskList,
@@ -10,8 +12,6 @@ import {
   userSchema,
 } from "../models/mongooze.js";
 
-import session, { SessionOptions } from "express-session";
-import sessionFileStore from "session-file-store";
 const FileStore = sessionFileStore(session);
 const routes: Router = express.Router();
 
@@ -174,10 +174,10 @@ async function register(req: Request, res: Response): Promise<Response> {
   }
 }
 
-// прослушиваем прерывание работы программы (ctrl-c)
+// check for program EXIT (ctrl-c)
 process.on("SIGINT", async () => {
   await mongoose.disconnect();
-  console.log("Приложение завершило работу");
+  console.log("Додаток завершив роботу");
   process.exit();
 });
 

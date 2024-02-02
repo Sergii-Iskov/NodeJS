@@ -1,13 +1,14 @@
 import express, { Express, Request, Response } from "express";
-import { v1Memory } from "./routes/v1Memory.js";
-import { v1File } from "./routes/v1File.js";
-import { v1Mongo } from "./routes/v1Mongo.js";
-import { v1Mongoose } from "./routes/v1Mongoose.js";
-import { v2 } from "./routes/v2.js";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
 import morgan from "morgan";
+import { v1Memory } from "./routes/v1Memory.js";
+import { v1File } from "./routes/v1File.js";
+import { v1Mongo } from "./routes/v1Mongo.js";
+import { v1Mongoose } from "./routes/v1Mongoose.js";
+// import { v2 } from "./routes/v2.js";      // use MongoDB
+import { v2 } from "./routes/v2mySQL.js"; // use mySQL
 
 declare module "express-session" {
   export interface Session {
@@ -15,7 +16,6 @@ declare module "express-session" {
     pass: string;
   }
 }
-// "@types/express-session": "^1.17.10",
 
 const app = express();
 const __dirname = path.resolve();
