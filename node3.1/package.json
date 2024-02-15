@@ -6,7 +6,8 @@
   "main": "hacaton.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "rimraf ./dist && tsc && node dist/hacaton.js"
+    "start": "rimraf ./dist && tsc && node dist/hacaton.js",
+    "startF": "rimraf ./src/function.js && tsc ./src/function.ts && node src/function.js"
   },
   "author": "",
   "license": "ISC",
