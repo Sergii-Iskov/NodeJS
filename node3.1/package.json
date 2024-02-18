@@ -6,9 +6,12 @@
   "main": "hacaton.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "rimraf ./dist && tsc && node dist/hacaton.js",
-    "startF": "rimraf ./src/function.js && tsc ./src/function.ts && node src/function.js"
-  },
+    "startH": "rimraf ./dist && tsc && node dist/task2hacaton.js",
+    "startF": "rimraf ./src/task3Function.js && tsc ./src/task3Function.ts && node src/task3Function.js",
+    "startBag": "rimraf ./src/task4Bags.js && tsc ./src/task4Bags.ts && node src/task4Bags.js",
+    "startMap": "rimraf ./src/task5map.js && tsc ./src/task5map.ts && node src/task5map.js"
+
+ },
   "author": "",
   "license": "ISC",
   "dependencies": {
